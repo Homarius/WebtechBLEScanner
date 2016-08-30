@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WebtechProject.AddMockupPage"
+             xmlns:i18n="clr-namespace:WebtechProject;assembly=WebtechProject"
+             xmlns:local="clr-namespace:WebtechProject;"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <ContentPage.Content>
+    <TableView Intent="Settings">
+      <TableRoot>
+        <TableSection Title="{i18n:Translate CreateNewPoint}">
+          <EntryCell Label="{i18n:Translate CadenceGraphHeader}" HorizontalTextAlignment="End" Keyboard="Numeric" Text="{Binding Cadence}"/>
+          <EntryCell Label="{i18n:Translate SpeedGraphHeader}" HorizontalTextAlignment="End" Keyboard="Numeric" Text="{Binding Speed}"/>
+          <ViewCell>
+            <StackLayout Orientation="Horizontal" Padding="16,0,0,0">
+              <Label Text="{i18n:Translate Date}" VerticalOptions="Center"/>
+              <DatePicker VerticalOptions="Center" Date="{Binding Date}" HorizontalOptions="EndAndExpand">
+                <DatePicker.Format>dd.MM.yyyy</DatePicker.Format>
+                <DatePicker.MinimumDate>
+                  <sys:DateTime x:FactoryMethod="Parse">
+                    <x:Arguments>
+                      <x:String>Jan 1 2000</x:String>
+                    </x:Arguments>
+                  </sys:DateTime>
+                </DatePicker.MinimumDate>
+                <DatePicker.MaximumDate>
+                  <sys:DateTime x:FactoryMethod="Parse">
+                    <x:Arguments>
+                      <x:String>Dec 31 2050</x:String>
+                    </x:Arguments>
+                  </sys:DateTime>
+                </DatePicker.MaximumDate>
+              </DatePicker>
+            </StackLayout>
+          </ViewCell>
+          <ViewCell>
+            <StackLayout Orientation="Horizontal" Padding="16,0,0,0">
+              <Label Text="{i18n:Translate Time}" VerticalOptions="Center"/>
+              <TimePicker Time="{Binding Time}" HorizontalOptions="EndAndExpand"/>
+            </StackLayout>         
+          </ViewCell>
+          <ViewCell>
+            <Button HorizontalOptions="End" VerticalOptions="Center" Text="{i18n:Translate Create}" Command="{Binding CreateMockupPointCommand}"/>
+          </ViewCell>
+        </TableSection>
+      </TableRoot>
+    </TableView>
+  </ContentPage.Content>
+</ContentPage>

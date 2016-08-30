@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+		        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+		        xmlns:local="clr-namespace:WebtechProject;"
+			      xmlns:i18n="clr-namespace:WebtechProject;assembly=WebtechProject"
+			      xmlns:oxy="clr-namespace:OxyPlot.Xamarin.Forms;assembly=OxyPlot.Xamarin.Forms"
+		        x:Class="WebtechProject.MainHub">
+
+  <TabbedPage.Resources>
+    <ResourceDictionary>
+      <local:VisibilityParamConverter x:Key="visParamConv">
+      </local:VisibilityParamConverter>
+
+      <x:Double x:Key="fontSizeSetting">20</x:Double>
+
+      <Style x:Key="seperator" TargetType="BoxView">
+        <Setter Property="HeightRequest" Value="1" />
+        <Setter Property="Opacity" Value="0.5" />
+        <Setter Property="Color" Value="Gray" />
+        <Setter Property="HorizontalOptions" Value="Fill" />
+      </Style>
+
+      <Style x:Key="imageSize" TargetType="Image">
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="HeightRequest" Value="25" />
+        <Setter Property="WidthRequest" Value="25" />
+      </Style>
+
+      <Style x:Key="imageStackLayout" TargetType="StackLayout">
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Center" />
+      </Style>
+
+      <Style x:Key="descriptionLabel" TargetType="Label">
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="TextColor" Value="Black" />
+        <Setter Property="FontSize" Value="{StaticResource fontSizeSetting}" />
+      </Style>
+    </ResourceDictionary>
+  </TabbedPage.Resources>
+
+  <TabbedPage.Children>
+    <!--BLUETOOTH-->
+    <ContentPage Title="{i18n:Translate BluetoothHeader}" Icon="ic_bluetooth" BackgroundColor="White">
+      <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0"/>
+      </ContentPage.Padding>
+      <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+        <Button x:Name="StartScanButton" Text="{i18n:Translate ScanBluetoothButton}" VerticalOptions="Center" IsVisible="{Binding IsScanning, Mode=TwoWay, Converter={StaticResource visParamConv}, ConverterParameter=1}" HorizontalOptions="Center" Command="{Binding ScanForBLEDevicesCommand}" />
+        <ActivityIndicator x:Name="ScanningIndicator" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding IsScanning, Mode=TwoWay, Converter={StaticResource visParamConv}, ConverterParameter=0}" Color="White" IsRunning="True" />
+        <Label Text="{i18n:Translate ScanningPlaceholder}" TextColor="Black" IsVisible="{Binding IsScanning, Mode=TwoWay, Converter={StaticResource visParamConv}, ConverterParameter=0}" />
+      </StackLayout>
+    </ContentPage>
+    <!--VISUALISATION-->
+    <ContentPage Title="{i18n:Translate DataHeader}" Icon="ic_graph" BackgroundColor="White">
+      <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0"/>
+      </ContentPage.Padding>
+      <ContentPage.Content>
+        <ScrollView>
+          <AbsoluteLayout>
+            <Grid AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" VerticalOptions="Fill" HorizontalOptions="Fill" BackgroundColor="White" Padding="5">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="250" />
+                <RowDefinition Height="250" />
+                <RowDefinition Height="*" />
+              </Grid.RowDefinitions>
+              <local:MyCustomGradientFrame Grid.Row="0" Padding="2" StartColor="#FFA500" EndColor="Red" BackgroundColor="Transparent">
+                <Grid>
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                  </Grid.RowDefinitions>
+                  <StackLayout Grid.Row="0" Padding="5">
+                    <Grid>
+                      <Label Text="{i18n:Translate SpeedGraphHeader}" TextColor="White" FontSize="20" HorizontalTextAlignment="Start"/>
+                      <Label Text="{Binding SpeedAverage, StringFormat='&#216; {0} km/h'}" TextColor="White" FontSize="15" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+                    </Grid>
+                    <BoxView HeightRequest="1" Color="White" Opacity="0.5"/>
+                  </StackLayout>
+                  <oxy:PlotView x:Name="OxySpeed" Grid.Row="1" VerticalOptions="Center" HorizontalOptions="Center" Model="{Binding SpeedModel}"/>
+                </Grid>
+              </local:MyCustomGradientFrame>
+              <local:MyCustomGradientFrame Grid.Row="1" Padding="2" StartColor="#00cc00" EndColor="Green" BackgroundColor="Transparent">
+                <Grid>
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                  </Grid.RowDefinitions>
+                  <StackLayout Grid.Row="0" Padding="5">
+                    <Grid>
+                      <Label Text="{i18n:Translate CadenceGraphHeader}" TextColor="White" FontSize="20" HorizontalTextAlignment="Start"/>
+                      <Label Text="{Binding CadenceAverage, StringFormat='&#216; {0} 1/min'}" TextColor="White" FontSize="15" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+                    </Grid>
+                    <BoxView HeightRequest="1" Color="White" Opacity="0.5"/>
+                  </StackLayout>
+                  <oxy:PlotView x:Name="OxyCadence" Grid.Row="1" VerticalOptions="Center" HorizontalOptions="Center" Model="{Binding CadenceModel}"/>
+                </Grid>
+              </local:MyCustomGradientFrame>
+              <ListView Grid.Row="2" x:Name="DataPoints" ItemsSource="{Binding SpeedAndCadenceData}">
+                <ListView.ItemTemplate>
+                  <DataTemplate>
+                    <TextCell Text="{Binding SpeedValue}" />
+                  </DataTemplate>
+                </ListView.ItemTemplate>
+              </ListView>
+            </Grid>
+            <AbsoluteLayout AbsoluteLayout.LayoutBounds=".5,0.01,100,80" AbsoluteLayout.LayoutFlags="PositionProportional" Opacity="0.8">
+              <local:RoundedButton Text="{i18n:Translate NewData}" BackgroundColor="#0099ff" TextColor="White" IsVisible="{Binding NewDataAvailable}"/>
+            </AbsoluteLayout>
+          </AbsoluteLayout>
+        </ScrollView>
+      </ContentPage.Content>
+    </ContentPage>
+    <!--SETTINGS-->
+    <ContentPage Title="{i18n:Translate SettingsHeader}" Icon="ic_settings.png" BackgroundColor="White">
+      <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0"/>
+      </ContentPage.Padding>
+      <!--<TableView >
+        <TableRoot>
+          <TableSection Title="{i18n:Translate SettingsGeneral}">
+
+          </TableSection>
+        </TableRoot>
+        <TableRoot>
+          <TableSection Title="{i18n:Translate SettingsDatabase}">
+
+          </TableSection>
+        </TableRoot>
+        <TableRoot>
+          <TableSection Title="{i18n:Translate SettingsMockup}">
+            <local:CustomMockupControl/>
+          </TableSection>
+        </TableRoot>
+      </TableView>-->
+      <ScrollView>
+        <Grid Padding="5">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="70" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+          </Grid.RowDefinitions>
+
+          <StackLayout Grid.ColumnSpan="3">
+            <Label Text="{i18n:Translate SettingsGeneral}" TextColor="Black" FontSize="12"/>
+            <BoxView Style="{StaticResource seperator}"/>
+          </StackLayout>
+
+          <StackLayout Grid.Row="1" Style="{StaticResource imageStackLayout}">
+            <Image Source="ic_alarm.png" Style="{StaticResource imageSize}"/>
+          </StackLayout>
+          <Label Grid.Row="1" Grid.Column="1" Text="{i18n:Translate SettingsScanDuration}" Style="{StaticResource descriptionLabel}"/>
+          <local:MyCustomEntry Grid.Row="1" Grid.Column="2" Text="{Binding ScanDuration, Mode=TwoWay}" TextColor="Black" HorizontalTextAlignment="End"/>
+          <BoxView Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource seperator}"/>
+
+          <StackLayout Grid.Row="3" Style="{StaticResource imageStackLayout}">
+            <Image Source="ic_today.png" Style="{StaticResource imageSize}"/>
+          </StackLayout>
+          <Label Grid.Row="3" Grid.Column="1" Text="{i18n:Translate SettingsTimeSpan}" Style="{StaticResource descriptionLabel}"/>
+          <local:MyCustomPicker x:Name="customPicker" Grid.Row="3" Grid.Column="2" HorizontalOptions="FillAndExpand" SelectedIndex="{Binding IndexSelectedTimeSpan, Mode=TwoWay}"/>
+          <BoxView Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource seperator}"/>
+
+          <local:MyCustomPicker Grid.Row="5" x:Name="DeviceSelector" VerticalOptions="Center" HorizontalOptions="Center" SelectedIndex="{Binding IndexSelectedDevice, Mode=TwoWay}" />
+
+          <StackLayout Grid.ColumnSpan="3" Grid.Row="6">
+            <Label Text="{i18n:Translate SettingsDatabase}" TextColor="Black" FontSize="12"/>
+            <BoxView Style="{StaticResource seperator}"/>
+          </StackLayout>
+          <StackLayout Grid.Row="7" Style="{StaticResource imageStackLayout}">
+            <Image Source="ic_delete_forever.png" Style="{StaticResource imageSize}"/>
+          </StackLayout>
+          <Label Grid.Row="7" Grid.Column="1" Text="{i18n:Translate DeleteDatabase}" Style="{StaticResource descriptionLabel}"/>
+          <Button Grid.Row="7" Grid.Column="2" Text="{i18n:Translate Delete}" Command="{Binding ClearDatabaseCommand}" HorizontalOptions="End"/>
+
+          <StackLayout Grid.ColumnSpan="3" Grid.Row="8">
+            <Label Text="{i18n:Translate SettingsMockup}" TextColor="Black" FontSize="12"/>
+            <BoxView Style="{StaticResource seperator}"/>
+          </StackLayout>
+          <local:CustomMockupControl Grid.Row="9" Grid.ColumnSpan="3"/>
+        </Grid>
+      </ScrollView>
+    </ContentPage>
+  </TabbedPage.Children>
+</TabbedPage>

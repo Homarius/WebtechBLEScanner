@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<StackLayout xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WebtechProject.CustomMockupControl"
+             xmlns:i18n="clr-namespace:WebtechProject;assembly=WebtechProject">
+  <StackLayout Orientation="Vertical">
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="70" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <Label Grid.Column="1" Text="Activate Mockup" VerticalOptions="Center" TextColor="Black" FontSize="20"/>
+      <Switch Grid.Column="2" IsToggled="false" HorizontalOptions="End" x:Name="ToggleSwitch"/>
+    </Grid>
+    <Grid BindingContext="{x:Reference ToggleSwitch}" IsVisible="{Binding Path=IsToggled}" HorizontalOptions="FillAndExpand">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="70" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <Label Text="{i18n:Translate AddPoint}" TextColor="Black" FontSize="20" Grid.Column="2" VerticalOptions="Center"/>
+      <Button Text="{i18n:Translate Add}" Clicked="Add_Clicked" Grid.Column="3" HorizontalOptions="End"/>
+      <Label Grid.Row="1" Text="{i18n:Translate AddPoints}" TextColor="Black" FontSize="20" Grid.Column="2" VerticalOptions="Center"/>
+      <Button Grid.Row="1" Text="{i18n:Translate Add}" Clicked="AddMultiple_Clicked" Grid.Column="3" HorizontalOptions="End"/>
+    </Grid>
+  </StackLayout>
+</StackLayout>
+
