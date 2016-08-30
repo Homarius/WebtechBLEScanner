@@ -71,6 +71,15 @@ namespace WebtechProject {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Activate mockup.
+        /// </summary>
+        internal static string ActivateMockup {
+            get {
+                return ResourceManager.GetString("ActivateMockup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to +.
         /// </summary>
         internal static string Add {
@@ -103,6 +112,33 @@ namespace WebtechProject {
         internal static string BLEUnsupported {
             get {
                 return ResourceManager.GetString("BLEUnsupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bluetooth deactivated.
+        /// </summary>
+        internal static string BluetoothDeacitvated {
+            get {
+                return ResourceManager.GetString("BluetoothDeacitvated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bluetooth Error.
+        /// </summary>
+        internal static string BluetoothError {
+            get {
+                return ResourceManager.GetString("BluetoothError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bluetooth must be turned on to use Bluetooth features!.
+        /// </summary>
+        internal static string BluetoothFeatureError {
+            get {
+                return ResourceManager.GetString("BluetoothFeatureError", resourceCulture);
             }
         }
         
@@ -152,6 +188,15 @@ namespace WebtechProject {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creation Date.
+        /// </summary>
+        internal static string CreationDate {
+            get {
+                return ResourceManager.GetString("CreationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you really want to clear the whole database? This can&apos;t be revoked..
         /// </summary>
         internal static string DatabaseWarning {
@@ -193,6 +238,15 @@ namespace WebtechProject {
         internal static string DeleteDatabase {
             get {
                 return ResourceManager.GetString("DeleteDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Bluetooth.
+        /// </summary>
+        internal static string EnableBluetooth {
+            get {
+                return ResourceManager.GetString("EnableBluetooth", resourceCulture);
             }
         }
         
@@ -274,6 +328,15 @@ namespace WebtechProject {
         internal static string OneDeletedItem {
             get {
                 return ResourceManager.GetString("OneDeletedItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The points have been successfully added..
+        /// </summary>
+        internal static string PointsAdded {
+            get {
+                return ResourceManager.GetString("PointsAdded", resourceCulture);
             }
         }
         

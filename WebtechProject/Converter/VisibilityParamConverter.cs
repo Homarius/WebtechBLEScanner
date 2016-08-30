@@ -6,10 +6,13 @@ using Xamarin.Forms;
 
 namespace WebtechProject
 {
+    /// <summary>
+    /// Custom converter to negate bool values which will be used for visibility binding
+    /// </summary>
 	public class VisibilityParamConverter : IValueConverter
 	{
 		/// <summary>
-		/// 
+		/// Converts a bool value according to the given param
 		/// </summary>
 		/// <param name="value">The boolean value binded to</param>
 		/// <param name="targetType"></param>
@@ -28,6 +31,14 @@ namespace WebtechProject
 				return !val;
 		}
 
+        /// <summary>
+        /// Auto created
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			return (bool)value;

@@ -222,4 +222,25 @@
   <data name="AddPoints" xml:space="preserve">
     <value>30 zufällige Punkte generieren</value>
   </data>
+  <data name="ActivateMockup" xml:space="preserve">
+    <value>Mockup aktivieren</value>
+  </data>
+  <data name="BluetoothDeacitvated" xml:space="preserve">
+    <value>Bluetooth deaktiviert</value>
+  </data>
+  <data name="BluetoothError" xml:space="preserve">
+    <value>Bluetooth Fehler</value>
+  </data>
+  <data name="BluetoothFeatureError" xml:space="preserve">
+    <value>Bluetooth muss aktiviert sein um diese Features zu nutzen!</value>
+  </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>Erstellungsdatum</value>
+  </data>
+  <data name="EnableBluetooth" xml:space="preserve">
+    <value>Bluetooth aktivieren</value>
+  </data>
+  <data name="PointsAdded" xml:space="preserve">
+    <value>Die Punkte wurden erfolgreich hinzugefügt.</value>
+  </data>
 </root>

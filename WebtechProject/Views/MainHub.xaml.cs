@@ -26,7 +26,7 @@ namespace WebtechProject
 			InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
             mainHubViewModel = new MainHubViewModel();
-			BindingContext = mainHubViewModel;
+			BindingContext = mainHubViewModel; //setting the viewmodel for the page
 
             //workaround for setting resource strings as picker items (!Breaks the mvvm pattern)
             customPicker.Items.Add(AppResources.LastDay);
@@ -39,6 +39,7 @@ namespace WebtechProject
 
 			mainHubViewModel.PropertyChanged += mainHubViewModel_PropertyChangedEventRaised;
 
+            //Contains all MessagingCenter events
             #region MessagingCenter
 
             MessagingCenter.Subscribe<MainHub>(this, "BluetoothError", (sender) =>
@@ -48,7 +49,7 @@ namespace WebtechProject
 
 			MessagingCenter.Subscribe<MainHub>(this, "BluetoothOff", async (sender) =>
 			{
-				var result = await DisplayAlert("Bluetooth Error", "Bluetooth must be turned on to use Bluetooth features!", "Enable Bluetooth", AppResources.Cancel);
+				var result = await DisplayAlert(AppResources.BluetoothError, AppResources.BluetoothFeatureError, AppResources.EnableBluetooth, AppResources.Cancel);
 				if (result)
 				{
 					await mainHubViewModel.turnOnBluetooth();
@@ -57,7 +58,7 @@ namespace WebtechProject
 
 			MessagingCenter.Subscribe<MainHub>(this, "iOSBluetoothDisabled", (sender) =>
 			{
-				DisplayAlert("Bluetooth disabled", AppResources.iOSBluetoothOff, AppResources.Ok);
+				DisplayAlert(AppResources.BluetoothDeacitvated, AppResources.iOSBluetoothOff, AppResources.Ok);
 			});
 
 			MessagingCenter.Subscribe<MainHub>(this, "NoDevicesFound", (sender) =>
@@ -79,7 +80,8 @@ namespace WebtechProject
                     else if(deletedItems != 0)
                     {
                         await DisplayAlert(AppResources.Info, String.Format(AppResources.NumberDeletedItems, deletedItems), AppResources.Ok);
-                    }                  
+                    }
+                    mainHubViewModel.update();                  
                 }
             });
 
@@ -88,13 +90,20 @@ namespace WebtechProject
                 Navigation.PushAsync(new AddMockupPage(), true);
             });
 
-            MessagingCenter.Subscribe<MainHub>(this, "CreatePoints", (sender) =>
+            MessagingCenter.Subscribe<MainHub>(this, "CreatePoints", (sender) => 
             {
                 List<SensorData> tmpList = MockupData.CreateRandomDataPointList(30);
                 foreach(var point in tmpList)
                 {
                     App.Database.SaveItem(point);
                 }
+                mainHubViewModel.update();
+                DisplayAlert("Info", AppResources.PointsAdded, AppResources.Ok);
+            });
+
+            MessagingCenter.Subscribe<MainHub>(this, "UpdateGraphs", (sender) =>
+            {
+                mainHubViewModel.update();
             });
 
             #endregion
@@ -104,18 +113,28 @@ namespace WebtechProject
 		{
 			if (e.PropertyName == "BluetoothDevicesAddresses")
 			{
-                DeviceSelector.Items.Clear(); //clears the selectionlist to avoid double entries
-                foreach (var d in ((MainHubViewModel)sender).BluetoothDevicesAddresses)
-                {
-                    DeviceSelector.Items.Add(d);
-                }
-                DeviceSelector.SelectedIndex = 0;
+                //DeviceSelector.Items.Clear(); //clears the selectionlist to avoid double entries
+                //foreach (var d in ((MainHubViewModel)sender).BluetoothDevicesAddresses)
+                //{
+                //    DeviceSelector.Items.Add(d);
+                //}
+                //DeviceSelector.SelectedIndex = 0;
             }
 			else if (e.PropertyName == "IsScanning")
 			{
 				StartScanButton.IsVisible = ((MainHubViewModel)sender).IsScanning;
 				ScanningIndicator.IsVisible = !((MainHubViewModel)sender).IsScanning;
 			}
+            else if (e.PropertyName == "DataPoints")
+            {
+                OxySpeed.Model = mainHubViewModel.SpeedModel;
+                OxyCadence.Model = mainHubViewModel.CadenceModel;
+
+                SpeedAvg.Text = String.Format("\u00D8 {0} km/h", mainHubViewModel.SpeedAverage.ToString());
+                CadenceAvg.Text = String.Format("\u00D8 {0} 1/min", mainHubViewModel.CadenceAverage.ToString());
+
+                DataPoints.ItemsSource = mainHubViewModel.SpeedAndCadenceData;
+            }
 		}
 	}
 }

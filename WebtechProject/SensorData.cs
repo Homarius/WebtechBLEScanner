@@ -13,6 +13,7 @@ namespace WebtechProject
 		private DateTime creationDate;
 		private double speedValue;
 		private int cadenceValue;
+        private string speedAndCandenceString;
 
         /// <summary>
         /// The id of the object. Needed for database indexing
@@ -47,8 +48,14 @@ namespace WebtechProject
 			set { cadenceValue = value; }
 		}
 
+        public string SpeedAndCandenceString
+        {
+            get { return speedAndCandenceString; }
+            set { speedAndCandenceString = value; }
+        }
+
         /// <summary>
-        /// Empty constructor which is need by sqlite-net
+        /// Empty constructor which is needed by sqlite-net
         /// </summary>
 		public SensorData()
 		{
@@ -65,6 +72,7 @@ namespace WebtechProject
 			this.CreationDate = date;
 			this.SpeedValue = speed;
 			this.CadenceValue = cadence;
+            this.SpeedAndCandenceString = String.Format("{0}: {1}, {2}: {3}", AppResources.SpeedGraphHeader, SpeedValue, AppResources.CadenceGraphHeader, CadenceValue);
 		}
 	}
 }

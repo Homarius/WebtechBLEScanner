@@ -58,6 +58,7 @@
     </Compile>
     <Compile Include="Bluetooth\IBluetooth.cs" />
     <Compile Include="Converter\VisibilityParamConverter.cs" />
+    <Compile Include="Converter\CreationDateConverter.cs" />
     <Compile Include="CustomControls\CustomMockupControl.xaml.cs">
       <DependentUpon>CustomMockupControl.xaml</DependentUpon>
     </Compile>
@@ -72,6 +73,7 @@
     <Compile Include="Globalization\ILocalize.cs" />
     <Compile Include="Globalization\TranslateExtension.cs" />
     <Compile Include="MockupData.cs" />
+    <Compile Include="CustomControls\MyCustomPlotView.cs" />
     <Compile Include="PlotTypeEnum.cs" />
     <Compile Include="RandomizerClass.cs" />
     <Compile Include="CustomControls\RoundedButton.cs" />

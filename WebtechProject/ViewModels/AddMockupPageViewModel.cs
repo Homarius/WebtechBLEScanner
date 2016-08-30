@@ -82,6 +82,7 @@ namespace WebtechProject
         private void createPoint()
         {
             App.Database.SaveItem(new SensorData(new DateTime(Date.Year, Date.Month, Date.Day, Time.Hours, Time.Minutes, 0), Speed, Cadence));
+            MessagingCenter.Send(ApplicationContext.MainPageHub, "UpdateGraphs");
             MessagingCenter.Send(ApplicationContext.AddPointPage, "NavigateBack");
         }
     }

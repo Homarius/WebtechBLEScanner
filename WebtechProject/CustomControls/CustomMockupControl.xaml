@@ -10,7 +10,7 @@
         <ColumnDefinition Width="Auto" />
         <ColumnDefinition Width="*" />
       </Grid.ColumnDefinitions>
-      <Label Grid.Column="1" Text="Activate Mockup" VerticalOptions="Center" TextColor="Black" FontSize="20"/>
+      <Label Grid.Column="1" Text="{i18n:Translate ActivateMockup}" VerticalOptions="Center" TextColor="Black" FontSize="20"/>
       <Switch Grid.Column="2" IsToggled="false" HorizontalOptions="End" x:Name="ToggleSwitch"/>
     </Grid>
     <Grid BindingContext="{x:Reference ToggleSwitch}" IsVisible="{Binding Path=IsToggled}" HorizontalOptions="FillAndExpand">

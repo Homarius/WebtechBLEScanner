@@ -134,7 +134,11 @@ namespace WebtechProject
         public double CadenceAverage
         {
             get { return _cadenceAverage; }
-            set { _cadenceAverage = value; }
+            set
+            {
+                _cadenceAverage = value;
+                OnPropertyChanged("DataPoints");
+            }
         }
 
         private bool _newDataAvailable = false;
@@ -231,7 +235,7 @@ namespace WebtechProject
             set
             {
                 _indexSelectedTimeSpan = value;
-                SpeedAndCadenceData = loadCorrespondingPoints();
+                update();
             }
         }
 
@@ -252,8 +256,17 @@ namespace WebtechProject
             BluetoothManager = Xamarin.Forms.DependencyService.Get<IBluetooth>();
             Database = new SensorDataDatabase();
 
-            SpeedAndCadenceData = new ObservableCollection<SensorData>(Database.GetItems(DateTime.Now.AddDays(-1), DateTime.Now).OrderBy(x => x.CreationDate));
+            update();
 
+            Device.StartTimer(TimeSpan.FromMilliseconds(1000), checkForUpdates);
+        }
+
+        /// <summary>
+        /// Loads the current data and updates the UI
+        /// </summary>
+        public void update()
+        {
+            SpeedAndCadenceData = loadCorrespondingPoints();
             SpeedModel = CreatePlotModel(SpeedAndCadenceData, PlotTypeEnum.Speed);
             CadenceModel = CreatePlotModel(SpeedAndCadenceData, PlotTypeEnum.Cadence);
 
@@ -267,16 +280,6 @@ namespace WebtechProject
                 SpeedAverage = 0;
                 CadenceAverage = 0;
             }
-
-            Device.StartTimer(TimeSpan.FromMilliseconds(1000), checkForUpdates);
-        }
-
-        /// <summary>
-        /// Loads the current data and updates the UI
-        /// </summary>
-        private void update()
-        {
-            SpeedAndCadenceData = loadCorrespondingPoints();
         }
 
         /// <summary>
@@ -337,7 +340,7 @@ namespace WebtechProject
                 BluetoothManager.SetupBluetooth();
                 if (BluetoothManager.IsAvailable())
                 {
-                    if (BluetoothManager.IsAcitivated())
+                    if (BluetoothManager.IsAcitivated()) //if bluetooth is available and turned on
                     {
                         IsScanning = true;
                         Task.Factory.StartNew(() =>
@@ -347,8 +350,8 @@ namespace WebtechProject
                             if (BluetoothDevicesAddresses.Count() == 0)
                             {
                                 MessagingCenter.Send(ApplicationContext.MainPageHub, "NoDevicesFound");
-                                List<string> tmp = new List<string>() { "Device1", "Device2", "Device3" };
-                                BluetoothDevicesAddresses = tmp;
+                                //List<string> tmp = new List<string>() { "Device1", "Device2", "Device3" };
+                                //BluetoothDevicesAddresses = tmp;
                                 IsScanning = false;
                             }
                         });
@@ -426,6 +429,9 @@ namespace WebtechProject
             return plotModel;
         }
 
+        /// <summary>
+        /// Compares the old collection with the new one
+        /// </summary>
         private void compareCollection()
         {
             if(BackupCollection != SpeedAndCadenceData)
